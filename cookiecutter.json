@@ -1,0 +1,113 @@
+{
+    "project_name": "My Project",
+    "_project_dir": "__db__",
+    "db_version": [
+        "postgres:latest",
+        "postgres:17",
+        "postgres:16",
+        "postgres:15",
+        "postgres:14",
+        "postgres:13",
+        "postgres:12",
+        "mysql:latest",
+        "mysql:9",
+        "mysql:lts",
+        "mysql:8.4",
+        "mariadb:latest",
+        "mariadb:11.6",
+        "mariadb:lts",
+        "mariadb:11.4",
+        "mariadb:10.11",
+        "mariadb:10.6",
+        "sqlite"
+    ],
+    "db_user": "{{ cookiecutter.project_name.lower()|replace(' ', '-') }}",
+    "db_password": "{{ cookiecutter.project_name.lower()|replace(' ', '-') }}-password",
+    "db_dbname": "{{ cookiecutter.project_name.lower()|replace(' ', '-') }}",
+    "memcached_version": [
+        "none",
+        "memcached:latest"
+    ],
+    "redis_version": [
+        "none",
+        "redis:latest",
+        "redis:7.4",
+        "redis:7.2",
+        "redis:6.2"
+    ],
+    "redis_persist_data": true,
+    "elasticsearch_version": [
+        "none",
+        "elasticsearch:8.16.1",
+        "elasticsearch:8.15.5",
+        "elasticsearch:8.14.3",
+        "elasticsearch:8.13.3",
+        "elasticsearch:7.17.26"
+    ],
+    "elasticsearch_persist_data": true,
+    "rabbitmq_version": [
+        "none",
+        "rabbitmq:4",
+        "rabbitmq:4-management",
+        "rabbitmq:3",
+        "rabbitmq:3-management"
+    ],
+    "rabbitmq_persist_data": true,
+    "__prompts__": {
+        "project_name": "What's the name of your project ? ",
+        "db_version": {
+            "__prompt__": "Which version of Database whould you like to use ? ",
+            "postgres:latest": "Postgresql Latest",
+            "postgres:17": "Postgresql v17",
+            "postgres:16": "Postgresql v16",
+            "postgres:15": "Postgresql v15",
+            "postgres:14": "Postgresql v14",
+            "postgres:13": "Postgresql v13",
+            "postgres:12": "Postgresql v12",
+            "mysql:latest": "MySQL Latest",
+            "mysql:9": "MySQL v9",
+            "mysql:lts": "MySQL LTS version",
+            "mysql:8.4": "MySQL v8",
+            "mariadb:latest": "MariaDB Latest",
+            "mariadb:11.6": "MariaDB v11.6",
+            "mariadb:lts": "MariaDB LTS version",
+            "mariadb:11.4": "MariaDB v11.4",
+            "mariadb:10.11": "MariaDB v10.11",
+            "mariadb:10.6": "MariaDB v10.6",
+            "sqlite": "Sqlite3"
+        },
+        "db_user": "What is the name of your USER ? ",
+        "db_password": "What is your desired PASSWORD ? ",
+        "db_dbname": "What is the NAME of your database ? ",
+        "memcached_version": {
+            "__prompt__": "Which version of Memcached whould you like to use ? ",
+            "none": "I don't use Memcached",
+            "memcached:latest": "Memcached Latest"
+        },
+        "redis_version": {
+            "__prompt__": "Which version of Redis whould you like to use ? ",
+            "none": "I don't use Redis",
+            "redis:latest": "Redis Latest",
+            "redis:7.4": "Redis v7.4",
+            "redis:7.2": "Redis v7.2",
+            "redis:6.2": "Redis v6.2"
+        },
+        "elasticsearch_version": {
+            "__prompt__": "Which version of Elasticsearch whould you like to use ? ",
+            "none": "I don't use Elasticsearch",
+            "elasticsearch:8.16.1": "Elasticsearch v8.16",
+            "elasticsearch:8.15.5": "Elasticsearch v8.15",
+            "elasticsearch:8.14.3": "Elasticsearch v8.14",
+            "elasticsearch:8.13.3": "Elasticsearch v8.13",
+            "elasticsearch:7.17.26": "Elasticsearch v7.17"
+        },
+        "rabbitmq": {
+            "__prompt__": "Would you like to use RabbitMQ ? ",
+            "none": "I'don't use RabbitMQ",
+            "rabbitmq:4": "RabbitMQ v4",
+            "rabbitmq:4-management": "RabbitMQ v4 (with management plugin)",
+            "rabbitmq:3": "RabbitMQ v3",
+            "rabbitmq:3-management": "RabbitMQ v3 (with management plugin)"
+        }
+    }
+}

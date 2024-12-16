@@ -1,0 +1,120 @@
+services:
+    {%- if "postgres" in cookiecutter.db_version %}
+    postgres:
+        container_name: postgres_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_container
+        image: {{ cookiecutter.db_version }}
+        working_dir: /app
+        restart: always
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_USER: {{ cookiecutter.db_user }}
+            POSTGRES_PASSWORD: {{ cookiecutter.db_password }}
+            POSTGRES_DB: {{ cookiecutter.db_dbname }}
+        volumes:
+            - "postgres_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_volume:/var/lib/postgresql/data/"
+    {%- elif "mysql" in cookiecutter.db_version %}
+    mysql:
+        container_name: mysql_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_container
+        image: {{ cookiecutter.db_version }}
+        working_dir: /app
+        command: 
+            - '--character-set-server=utf8mb4'
+            - '--collation-server=utf8mb4_unicode_ci'
+        restart: always
+        ports:
+            - "3306:3306"
+        environment:
+            - MYSQL_DATABASE={{ cookiecutter.db_dbname }}
+            - MYSQL_ROOT_PASSWORD={{ cookiecutter.db_password }}
+            - MYSQL_USER={{ cookiecutter.db_user }}
+            - MYSQL_PASSWORD={{ cookiecutter.db_password }}
+        volumes:
+            - "mysql_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_volume:/var/lib/mysql"
+        {%- elif "mariadb" in cookiecutter.db_version %}
+        mariadb:
+            container_name: mariadb_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_container
+            image: {{ cookiecutter.db_version }}
+            working_dir: /app
+            command: 
+                - '--character-set-server=utf8mb4'
+                - '--collation-server=utf8mb4_unicode_ci'
+            restart: always
+            ports:
+                - "3306:3306"
+            environment:
+                - MYSQL_DATABASE={{ cookiecutter.db_dbname }}
+                - MYSQL_ROOT_PASSWORD={{ cookiecutter.db_password }}
+                - MYSQL_USER={{ cookiecutter.db_user }}
+                - MYSQL_PASSWORD={{ cookiecutter.db_password }}
+            volumes:
+                - "mariadb_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_volume:/var/lib/mysql"
+        {% endif %}
+
+        {%- if "memcached" in cookiecutter.memcached_version %}
+        memcached:
+            image: {{ cookiecutter.memcached_version }}
+            container_name: memcached_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_container
+            ports:
+                - "11211:11211"
+        {%- endif %}
+
+        {%- if "redis" in cookiecutter.redis_version %}
+        redis:
+            image: {{ cookiecutter.redis_version }}
+            container_name: redis_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_container
+            ports:
+                - "6379:6379"
+            {%- if cookiecutter.redis_persist_data %}
+            volumes:
+                - redis_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_volume:/data
+            {%- endif %}
+        {%- endif %}
+
+        {%- if "elasticsearch" in cookiecutter.elasticsearch_version %}
+        elasticsearch:
+            image: {{ cookiecutter.elasticsearch_version }}
+            container_name: elasticsearch_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_container
+            environment:
+                - discovery.type=single-node
+            ports:
+                - "9200:9200"
+            volumes:
+                - elasticsearch_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_volume:/usr/share/elasticsearch/data
+        {%- endif %}
+
+        {%- if "rabbitmq" in cookiecutter.rabbitmq_version %}
+        rabbitmq:
+            image: {{ cookiecutter.elasticsearch_version }}
+            container_name: rabbitmq_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_container
+            ports:
+                - "5672:5672"
+            {%- if "management" in cookiecutter.rabbitmq_version %}
+                - "15672:15672"
+            {%- endif %}
+            environment:
+                RABBITMQ_DEFAULT_USER: user
+                RABBITMQ_DEFAULT_PASS: strongpassword
+            {%- if cookiecutter.rabbitmq_persist_data %}
+            volumes:
+                - rabbitmq_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_volume:/var/lib/rabbitmq
+            {%- endif %}
+        {%- endif %}
+
+volumes:
+    {%- if "postgres" in cookiecutter.db_version %}
+    postgres_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_volume:
+    {%- elif "mysql" in cookiecutter.db_version %}
+    mysql_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_volume:
+    {%- elif "mariadb" in cookiecutter.db_version %}
+    mariadb_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_volume:
+    {%- endif %}
+    {%- if "redis" in cookiecutter.redis_version and cookiecutter.redis_persist_data %}
+    redis_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_volume:
+    {%- endif %}
+    {%- if "rabbitmq" in cookiecutter.rabbitmq_version and cookiecutter.rabbitmq_persist_data %}
+    rabbitmq_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_volume:
+    {%- endif %}
+    {%- if "elasticsearch" in cookiecutter.elasticsearch_version and cookiecutter.elasticsearch_persist_data %}
+    elasticsearch_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_volume:
+    {%- endif %}
