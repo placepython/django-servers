@@ -45,6 +45,11 @@
         "elasticsearch:7.17.26"
     ],
     "elasticsearch_persist_data": true,
+    "solr_version": [
+        "none",
+        "tchappui/solr:6.6.6"
+    ],
+    "solr_persist_data": true,
     "rabbitmq_version": [
         "none",
         "rabbitmq:4",
@@ -92,6 +97,7 @@
             "redis:7.2": "Redis v7.2",
             "redis:6.2": "Redis v6.2"
         },
+        "redis_persist_data": "Would you like to persist Redis data in a dediacted volume ? ",
         "elasticsearch_version": {
             "__prompt__": "Which version of Elasticsearch whould you like to use ? ",
             "none": "I don't use Elasticsearch",
@@ -101,6 +107,13 @@
             "elasticsearch:8.13.3": "Elasticsearch v8.13",
             "elasticsearch:7.17.26": "Elasticsearch v7.17"
         },
+        "elasticsearch_persist_data": "Would you like to persist Elasticsearch data in a dediacted volume ? ",
+        "solr_version": {
+            "__prompt__": "Which version of Solr whould you like to use ? ",
+            "none": "I don't use Solr",
+            "solr:6.6.6": "Solr v6.6 (pour Django-Oscar)"
+        },
+        "solr_persist_data": "Would you like to persist Solr data in a dediacted volume ? ",
         "rabbitmq": {
             "__prompt__": "Would you like to use RabbitMQ ? ",
             "none": "I'don't use RabbitMQ",
@@ -108,6 +121,7 @@
             "rabbitmq:4-management": "RabbitMQ v4 (with management plugin)",
             "rabbitmq:3": "RabbitMQ v3",
             "rabbitmq:3-management": "RabbitMQ v3 (with management plugin)"
-        }
+        },
+        "rabbitmq_persist_data": "Would you like to persist RabbitMQ data in a dediacted volume ? "
     }
 }

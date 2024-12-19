@@ -31,75 +31,85 @@ services:
             - MYSQL_PASSWORD={{ cookiecutter.db_password }}
         volumes:
             - "mysql_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_volume:/var/lib/mysql"
-        {%- elif "mariadb" in cookiecutter.db_version %}
-        mariadb:
-            container_name: mariadb_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_container
-            image: {{ cookiecutter.db_version }}
-            working_dir: /app
-            command: 
-                - '--character-set-server=utf8mb4'
-                - '--collation-server=utf8mb4_unicode_ci'
-            restart: always
-            ports:
-                - "3306:3306"
-            environment:
-                - MYSQL_DATABASE={{ cookiecutter.db_dbname }}
-                - MYSQL_ROOT_PASSWORD={{ cookiecutter.db_password }}
-                - MYSQL_USER={{ cookiecutter.db_user }}
-                - MYSQL_PASSWORD={{ cookiecutter.db_password }}
-            volumes:
-                - "mariadb_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_volume:/var/lib/mysql"
-        {% endif %}
+    {%- elif "mariadb" in cookiecutter.db_version %}
+    mariadb:
+        container_name: mariadb_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_container
+        image: {{ cookiecutter.db_version }}
+        working_dir: /app
+        command: 
+            - '--character-set-server=utf8mb4'
+            - '--collation-server=utf8mb4_unicode_ci'
+        restart: always
+        ports:
+            - "3306:3306"
+        environment:
+            - MYSQL_DATABASE={{ cookiecutter.db_dbname }}
+            - MYSQL_ROOT_PASSWORD={{ cookiecutter.db_password }}
+            - MYSQL_USER={{ cookiecutter.db_user }}
+            - MYSQL_PASSWORD={{ cookiecutter.db_password }}
+        volumes:
+            - "mariadb_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_volume:/var/lib/mysql"
+    {% endif %}
 
-        {%- if "memcached" in cookiecutter.memcached_version %}
-        memcached:
-            image: {{ cookiecutter.memcached_version }}
-            container_name: memcached_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_container
-            ports:
-                - "11211:11211"
-        {%- endif %}
+    {%- if "memcached" in cookiecutter.memcached_version %}
+    memcached:
+        image: {{ cookiecutter.memcached_version }}
+        container_name: memcached_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_container
+        ports:
+            - "11211:11211"
+    {%- endif %}
 
-        {%- if "redis" in cookiecutter.redis_version %}
-        redis:
-            image: {{ cookiecutter.redis_version }}
-            container_name: redis_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_container
-            ports:
-                - "6379:6379"
-            {%- if cookiecutter.redis_persist_data %}
-            volumes:
-                - redis_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_volume:/data
-            {%- endif %}
+    {%- if "redis" in cookiecutter.redis_version %}
+    redis:
+        image: {{ cookiecutter.redis_version }}
+        container_name: redis_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_container
+        ports:
+            - "6379:6379"
+        {%- if cookiecutter.redis_persist_data %}
+        volumes:
+            - redis_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_volume:/data
         {%- endif %}
+    {%- endif %}
 
-        {%- if "elasticsearch" in cookiecutter.elasticsearch_version %}
-        elasticsearch:
-            image: {{ cookiecutter.elasticsearch_version }}
-            container_name: elasticsearch_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_container
-            environment:
-                - discovery.type=single-node
-            ports:
-                - "9200:9200"
-            volumes:
-                - elasticsearch_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_volume:/usr/share/elasticsearch/data
-        {%- endif %}
+    {%- if "elasticsearch" in cookiecutter.elasticsearch_version %}
+    elasticsearch:
+        image: {{ cookiecutter.elasticsearch_version }}
+        container_name: elasticsearch_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_container
+        environment:
+            - discovery.type=single-node
+        ports:
+            - "9200:9200"
+        volumes:
+            - elasticsearch_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_volume:/usr/share/elasticsearch/data
+    {%- endif %}
 
-        {%- if "rabbitmq" in cookiecutter.rabbitmq_version %}
-        rabbitmq:
-            image: {{ cookiecutter.elasticsearch_version }}
-            container_name: rabbitmq_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_container
-            ports:
-                - "5672:5672"
-            {%- if "management" in cookiecutter.rabbitmq_version %}
-                - "15672:15672"
-            {%- endif %}
-            environment:
-                RABBITMQ_DEFAULT_USER: user
-                RABBITMQ_DEFAULT_PASS: strongpassword
-            {%- if cookiecutter.rabbitmq_persist_data %}
-            volumes:
-                - rabbitmq_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_volume:/var/lib/rabbitmq
-            {%- endif %}
+    {%- if "solr" in cookiecutter.solr_version %}
+    solr:
+        image: {{ cookiecutter.solr_version }}
+        container_name: solr_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_container
+        ports:
+            - "8983:8983"
+        volumes:
+            - solr_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_volume:/opt/solr/solr
+    {%- endif %}
+
+    {%- if "rabbitmq" in cookiecutter.rabbitmq_version %}
+    rabbitmq:
+        image: {{ cookiecutter.elasticsearch_version }}
+        container_name: rabbitmq_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_container
+        ports:
+            - "5672:5672"
+        {%- if "management" in cookiecutter.rabbitmq_version %}
+            - "15672:15672"
         {%- endif %}
+        environment:
+            RABBITMQ_DEFAULT_USER: user
+            RABBITMQ_DEFAULT_PASS: strongpassword
+        {%- if cookiecutter.rabbitmq_persist_data %}
+        volumes:
+            - rabbitmq_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_volume:/var/lib/rabbitmq
+        {%- endif %}
+    {%- endif %}
 
 volumes:
     {%- if "postgres" in cookiecutter.db_version %}
@@ -117,4 +127,7 @@ volumes:
     {%- endif %}
     {%- if "elasticsearch" in cookiecutter.elasticsearch_version and cookiecutter.elasticsearch_persist_data %}
     elasticsearch_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_volume:
+    {%- endif %}
+    {%- if "solr" in cookiecutter.solr_version and cookiecutter.solr_persist_data %}
+    solr_{{ cookiecutter.project_name.lower()|replace(' ', '_') }}_volume:
     {%- endif %}
